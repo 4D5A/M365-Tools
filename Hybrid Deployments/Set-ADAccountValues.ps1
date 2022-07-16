@@ -29,7 +29,7 @@ Function CreateNewUser($GivenName, $Surname)
 		$username=$GivenName.substring(0,1)+$Surname
 		$EmailAddress = "$username@example.com";
 		$Company = "COMPANY";
-		$Path = "OU=Current, OU=O365 Users, OU=O365, DC=example, DC=com";
+		$Path = "OU=O365 Users, OU=O365, DC=example, DC=com";
 		$StreetAddress = "STREET ADDRESS";
 		$City = "CITY";
 		$State = "ST";
