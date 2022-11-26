@@ -4,11 +4,11 @@ Param(
   [parameter(Mandatory=$False)]
   [switch]$hybrid,    
   [parameter(Mandatory=$False)]
-  [switch]$onpremisis
+  [switch]$local
 )
 
-If(-NOT (($cloud) -or ($hybrid) -or ($onpremisis))) {
-  Write-Host "You did not choose Cloud, Hybrid, or Onpremisis. Please run this script again and specify the required switch."
+If(-NOT (($cloud) -or ($hybrid) -or ($local))) {
+  Write-Host "You did not choose Cloud, Hybrid, or Local. Please run this script again and specify the required switch."
   Exit
 }
 
@@ -60,12 +60,12 @@ If(($cloud) -or ($hybrid)){
   Import-Module -Name AzureAD -ErrorAction:SilentlyContinue
 }
 
-If(($hybrid) -or ($onpremisis)) {
+If(($hybrid) -or ($local)) {
   $DomainControllers = Get-ADDomainController -Filter * | Select-Object Name -ExpandProperty Name
   $NamingContext = Get-ADRootDSE | Select-Object rootDomainNamingContext -ExpandProperty rootDomainNamingContext
   $name = hostname
   If ($DomainControllers -notcontains $name) {
-      Write-Host "You are not logged into a Domain Controller. There are pre-requisites for running this script with the onpremisis switch from a non-Domain Controller. Please verify that this computer is a Domain Joined computer with RSAT installed."
+      Write-Host "You are not logged into a Domain Controller. There are pre-requisites for running this script with the local switch from a non-Domain Controller. Please verify that this computer is a Domain Joined computer with RSAT installed."
       Import-Module -Name ActiveDirectory -ErrorAction:SilentlyContinue
       If (-Not (Get-Module -Name ActiveDirectory)) {
           Add-WindowsCapability -Online -name "RSAT.ActiveDirectory.DS-LDS.Tools"
@@ -98,7 +98,7 @@ If($hybrid) {
   }
 }
 
-If($onpremisis) {
+If($local) {
   $DisableADUserConfirmDecision = Read-host "If you continue, the AD user $UPN will be disabled. Do you want to proceed? (Yes/No)"
   If ($DisableADUserConfirmDecision -like "Yes") {
     DisableADUser
