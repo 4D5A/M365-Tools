@@ -26,8 +26,8 @@ Function DisableAADUserandRegisteredDevices() {
   Get-AzureADUser -ObjectID $UPN | Revoke-AzureADUserAllRefreshToken
   "Getting the Azure Active Directory account status of $UPN" | Tee-Object -FilePath "$Logfilepath\$File" -Append | Write-Host -ForegroundColor Green
   Get-AzureADUser -ObjectID $UPN | Select-Object UserPrincipalName, AccountEnabled
-  $DisableAzureADuserRegisteredDevices = Read-host "If you continue, the Azure AD User Registered Devices associated with $UPN will be disabled. Do you want to proceed? (Yes/No)"
-  If ($DisableAzureADUserRegisteredDevices -like "Yes") {
+  $DisableAzureADuserRegisteredDevicesConfirmDecision = Read-host "If you continue, the Azure AD User Registered Devices associated with $UPN will be disabled. Do you want to proceed? (Yes/No)"
+  If ($DisableAzureADUserRegisteredDevicesConfirmDecision -like "Yes") {
       "Disabling all Azure Active Directory User Registered Devices associated with $UPN" | Tee-Object -FilePath "$Logfilepath\$File" -Append | Write-Host -ForegroundColor Green
       Get-AzureADUserRegisteredDevice -ObjectId $UPN | Set-AzureADDevice -AccountEnabled $false
       "Getting the status of Azure Active Directory User Registered Devices associated with $UPN" | Tee-Object -FilePath "$Logfilepath\$File" -Append | Write-Host -ForegroundColor Green
